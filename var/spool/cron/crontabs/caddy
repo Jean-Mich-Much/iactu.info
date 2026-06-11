@@ -5,12 +5,14 @@
 00,14,24,34,44,54 * * * * cd /_ && php /_/Page_jeux.php > /dev/null 2>&1
 00,16,26,36,46,56 * * * * cd /_ && php /_/Page_sciences.php > /dev/null 2>&1
 00,18,28,38,48,58 * * * * cd /_ && php /_/Page_actualités.php > /dev/null 2>&1
+00,18,28,38,48,58 * * * * cd /_ && php /_/Page_tv.php > /dev/null 2>&1
 
 00,10,20,30,40,50 * * * * cd /_ && php /_/Page_technologie_listing.php > /dev/null 2>&1
 00,12,22,32,42,52 * * * * cd /_ && php /_/Page_Apple_listing.php > /dev/null 2>&1
 00,14,24,34,44,54 * * * * cd /_ && php /_/Page_jeux_listing.php > /dev/null 2>&1
 00,16,26,36,46,56 * * * * cd /_ && php /_/Page_sciences_listing.php > /dev/null 2>&1
 00,18,28,38,48,58 * * * * cd /_ && php /_/Page_actualités_listing.php > /dev/null 2>&1
+00,18,28,38,48,58 * * * * cd /_ && php /_/Page_tv_listing.php > /dev/null 2>&1
 
 # Mise à jour des flux xml
 05,15,25,35,45,55 * * * * cd /_ && php /_/maj.php > /dev/null 2>&1
@@ -18,8 +20,3 @@
 
 # Mise à jour du flux TV et des pages
 49 */3 * * * cd /_/Fondation/py && python3 tv.py > /dev/null 2>&1
-53 * * * * cd /_ && php /_/Page_tv.php > /dev/null 2>&1
-53 * * * * cd /_ && php /_/Page_tv_listing.php > /dev/null 2>&1
-
-# Stats 1 fois par jour
-58 23 * * * cd /_ && php /_/Page_stats.php > /dev/null 2>&1
