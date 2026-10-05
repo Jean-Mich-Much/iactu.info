@@ -40,6 +40,12 @@ function news_id($link){
 return 'n'.substr(hash('crc32b',$link),0,10);
 }
 
+function unicode_to_utf8($s){
+$s=urldecode($s);
+$s=preg_replace('/%u([0-9a-fA-F]{4})/','&#x\\1;',$s);
+$s=preg_replace('/(\d+)\s*[uU]\s*([0-9a-fA-F]{4});?/','\\1 &#x\\2;',$s);
+return html_entity_decode($s,ENT_QUOTES|ENT_HTML5,'UTF-8');
+}
 function affiche($f,$mode,$n){
 ob_start();
 $x=load_flux($f,$mode);
@@ -71,8 +77,8 @@ $nb=count($t);
 
 echo'<article class="news-box">';
 echo'<header class="news-header"><div class="news-title">';
-if($site!=='')echo'<a class="news-title-link" rel="noopener" target="_blank" id="'.news_title_id($site).'" href="'.$site.'">🚀&nbsp;'.$x->channel->title.'</a>';
-else echo'🚀&nbsp;'.$x->channel->title;
+if($site!=='')echo'<a class="news-title-link" rel="noopener" target="_blank" id="'.news_title_id($site).'" href="'.$site.'">🚀&nbsp;'.htmlspecialchars(unicode_to_utf8((string)$x->channel->title),ENT_QUOTES,'UTF-8').'</a>';
+else echo'🚀&nbsp;'.htmlspecialchars(unicode_to_utf8((string)$x->channel->title),ENT_QUOTES,'UTF-8');
 echo'</div><div class="news-count">'.($nb>0?$nb.' news aujourd’hui':'Rien de neuf').'&nbsp;⏰</div></header>';
 
 if($nb>0){

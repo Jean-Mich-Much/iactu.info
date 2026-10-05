@@ -51,6 +51,13 @@ function news_id($link){
 return 'n'.substr(hash('crc32b',$link),0,10);
 }
 
+function unicode_to_utf8($s){
+$s=urldecode($s);
+$s=preg_replace('/%u([0-9a-fA-F]{4})/','&#x\\1;',$s);
+$s=preg_replace('/(\d+)\s*[uU]\s*([0-9a-fA-F]{4});?/','\\1 &#x\\2;',$s);
+return html_entity_decode($s,ENT_QUOTES|ENT_HTML5,'UTF-8');
+}
+
 function affiche($f,$mode,$n){
 ob_start();
 $x=load_flux($f,$mode);
@@ -76,7 +83,7 @@ echo'</div><div class="news-count">'.($nb>0?$nb.' news aujourd’hui':'Rien de n
 
 if($nb>0){
 echo'<section class="news-section"><div class="section-title">📅&nbsp;Aujourd’hui</div><ul class="news-list">';
-foreach($t as $i)echo'<li class="news-item"><a class="n" rel="noopener" target="_blank" id="'.news_id($i->link).'" href="'.$i->link.'">'.$i->title.'</a></li>';
+foreach($t as $i)echo'<li class="news-item"><a class="n" rel="noopener" target="_blank" id="'.news_id($i->link).'" href="'.$i->link.'">'.unicode_to_utf8((string)$i->title).'</a></li>';
 echo'</ul></section>';
 if(!count($o))echo'<section class="news-section"><div class="section-title">☕️&nbsp;C’est tout pour aujourd’hui !</div></section>';
 }
@@ -85,7 +92,7 @@ if(!$nb&&count($o))echo'<section class="news-section"><div class="section-title"
 
 if(count($o)){
 echo'<section class="news-section"><div class="section-title">📅&nbsp;Jours précédents</div><ul class="news-list">';
-foreach($o as $i)echo'<li class="news-item"><a class="n" rel="noopener" target="_blank" id="'.news_id($i->link).'" href="'.$i->link.'">'.$i->title.'</a></li>';
+foreach($o as $i)echo'<li class="news-item"><a class="n" rel="noopener" target="_blank" id="'.news_id($i->link).'" href="'.$i->link.'">'.unicode_to_utf8((string)$i->title).'</a></li>';
 echo'</ul></section>';
 }
 

@@ -40,6 +40,13 @@ function news_id($link){
 return 'n'.substr(hash('crc32b',$link),0,10);
 }
 
+function unicode_to_utf8($s){
+$s=urldecode($s);
+$s=preg_replace('/%u([0-9a-fA-F]{4})/','&#x\\1;',$s);
+$s=preg_replace('/(\d+)\s*[uU]\s*([0-9a-fA-F]{4});?/','\\1 &#x\\2;',$s);
+return html_entity_decode($s,ENT_QUOTES|ENT_HTML5,'UTF-8');
+}
+
 function affiche($f,$mode,$n){
 ob_start();
 $x=load_flux($f,$mode);
@@ -65,7 +72,7 @@ $ts=strtotime((string)$i->pubDate);
 $h=date('H:i',$ts);
 $l=(string)$i->link;
 echo'<li class="news-item"><a class="n" rel="noopener" target="_blank" id="'.news_id($l).'" href="'.$l.'">'
-.htmlspecialchars((string)$i->title,ENT_QUOTES,'UTF-8')
+.htmlspecialchars(unicode_to_utf8((string)$i->title),ENT_QUOTES,'UTF-8')
 .'<span class="n_heure_news"> &#149; '.$h.'</span>'
 .'<span class="n_nom_site"> &#149; '.news_site_name($l).'</span>'
 .'</a></li>';
@@ -83,7 +90,7 @@ $ts=strtotime((string)$i->pubDate);
 $h=date('H:i',$ts);
 $l=(string)$i->link;
 echo'<li class="news-item"><a class="n" rel="noopener" target="_blank" id="'.news_id($l).'" href="'.$l.'">'
-.htmlspecialchars((string)$i->title,ENT_QUOTES,'UTF-8')
+.htmlspecialchars(unicode_to_utf8((string)$i->title),ENT_QUOTES,'UTF-8')
 .'<span class="n_nom_site"> &#149; '.news_site_name($l).'</span>'
 .'</a></li>';
 }
